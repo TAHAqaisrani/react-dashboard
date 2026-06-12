@@ -1,0 +1,415 @@
+:root {
+  --db-bg:          #0f1117;
+  --db-surface:     #161b27;
+  --db-surface-2:   #1e2535;
+  --db-border:      rgba(255,255,255,0.07);
+  --db-border-md:   rgba(255,255,255,0.12);
+  --db-text-1:      #f0f2f5;
+  --db-text-2:      #8b92a5;
+  --db-text-3:      #555e72;
+ 
+  --db-blue:        #3b82f6;
+  --db-blue-dim:    rgba(59,130,246,0.12);
+  --db-purple:      #a78bfa;
+  --db-purple-dim:  rgba(167,139,250,0.12);
+  --db-teal:        #2dd4bf;
+  --db-teal-dim:    rgba(45,212,191,0.12);
+  --db-amber:       #fbbf24;
+  --db-amber-dim:   rgba(251,191,36,0.12);
+  --db-green:       #4ade80;
+  --db-green-dim:   rgba(74,222,128,0.12);
+  --db-red:         #f87171;
+  --db-red-dim:     rgba(248,113,113,0.12);
+  --db-orange:      #fb923c;
+  --db-orange-dim:  rgba(251,146,60,0.12);
+  --db-pink:        #f472b6;
+  --db-pink-dim:    rgba(244,114,182,0.12);
+}
+ 
+/* ─── Base ───────────────────────────────────────────── */
+.db-root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  color: var(--db-text-1);
+  background: var(--db-bg);
+  min-height: 100vh;
+  padding: 32px 36px 56px;
+  box-sizing: border-box;
+}
+ 
+/* ─── Loading ────────────────────────────────────────── */
+.db-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100vh;
+  color: var(--db-text-2);
+  font-size: 14px;
+}
+.db-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--db-border-md);
+  border-top-color: var(--db-blue);
+  border-radius: 50%;
+  animation: db-spin 0.7s linear infinite;
+}
+@keyframes db-spin { to { transform: rotate(360deg); } }
+ 
+/* ─── Header ─────────────────────────────────────────── */
+.db-header {
+  margin-bottom: 28px;
+}
+.db-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin: 0 0 4px;
+  color: var(--db-text-1);
+}
+.db-subtitle {
+  font-size: 13px;
+  color: var(--db-text-2);
+  margin: 0;
+}
+ 
+/* ─── Stat cards ─────────────────────────────────────── */
+.db-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+ 
+.db-stat-card {
+  background: var(--db-surface);
+  border-radius: 12px;
+  border: 1px solid var(--db-border);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.db-stat-card:hover {
+  border-color: var(--db-border-md);
+  background: var(--db-surface-2);
+}
+ 
+.db-stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.db-stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.db-stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--db-text-3);
+  font-weight: 500;
+}
+.db-stat-value {
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+ 
+/* stat card variants */
+.db-stat-card--blue   .db-stat-icon { background: var(--db-blue-dim);   color: var(--db-blue); }
+.db-stat-card--blue   .db-stat-value { color: var(--db-blue); }
+ 
+.db-stat-card--purple .db-stat-icon { background: var(--db-purple-dim); color: var(--db-purple); }
+.db-stat-card--purple .db-stat-value { color: var(--db-purple); }
+ 
+.db-stat-card--teal   .db-stat-icon { background: var(--db-teal-dim);   color: var(--db-teal); }
+.db-stat-card--teal   .db-stat-value { color: var(--db-teal); }
+ 
+.db-stat-card--amber  .db-stat-icon { background: var(--db-amber-dim);  color: var(--db-amber); }
+.db-stat-card--amber  .db-stat-value { color: var(--db-amber); }
+ 
+.db-stat-card--green  .db-stat-icon { background: var(--db-green-dim);  color: var(--db-green); }
+.db-stat-card--green  .db-stat-value { color: var(--db-green); }
+ 
+.db-stat-card--coral  .db-stat-icon { background: var(--db-pink-dim);   color: var(--db-pink); }
+.db-stat-card--coral  .db-stat-value { color: var(--db-pink); }
+ 
+.db-stat-card--red    .db-stat-icon { background: var(--db-red-dim);    color: var(--db-red); }
+.db-stat-card--red    .db-stat-value { color: var(--db-red); }
+ 
+.db-stat-card--orange .db-stat-icon { background: var(--db-orange-dim); color: var(--db-orange); }
+.db-stat-card--orange .db-stat-value { color: var(--db-orange); }
+ 
+/* ─── Two-column row ─────────────────────────────────── */
+.db-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+ 
+/* ─── Cards ──────────────────────────────────────────── */
+.db-card {
+  background: var(--db-surface);
+  border-radius: 14px;
+  border: 1px solid var(--db-border);
+  padding: 22px 24px;
+}
+ 
+.db-card-header {
+  margin-bottom: 20px;
+}
+.db-card-header--between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+ 
+.db-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--db-text-1);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.db-card-title .ti {
+  font-size: 15px;
+  color: var(--db-text-3);
+}
+ 
+/* ─── Error list ─────────────────────────────────────── */
+.db-error-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.db-error-row {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.db-error-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+.db-error-index {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--db-text-3);
+  font-variant-numeric: tabular-nums;
+  width: 20px;
+}
+.db-error-type {
+  flex: 1;
+  color: var(--db-text-1);
+  font-weight: 500;
+}
+.db-error-count {
+  color: var(--db-text-2);
+  font-variant-numeric: tabular-nums;
+}
+.db-error-pct {
+  font-weight: 700;
+  color: var(--db-red);
+  font-variant-numeric: tabular-nums;
+  min-width: 36px;
+  text-align: right;
+}
+ 
+/* ─── Feedback list ──────────────────────────────────── */
+.db-feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.db-feedback-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.db-feedback-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.db-agent-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--db-text-1);
+}
+.db-feedback-counts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+.db-like-count {
+  color: var(--db-green);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 600;
+}
+.db-dislike-count {
+  color: var(--db-red);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 600;
+}
+.db-sat-badge {
+  background: var(--db-green-dim);
+  color: var(--db-green);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(74,222,128,0.2);
+}
+ 
+/* ─── Filters ────────────────────────────────────────── */
+.db-card--activity {
+  margin-bottom: 0;
+}
+.db-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.db-filter-sep {
+  color: var(--db-text-3);
+  font-size: 13px;
+}
+.db-input {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--db-border-md);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--db-text-1);
+  background: var(--db-surface-2);
+  outline: none;
+  transition: border-color 0.15s;
+  color-scheme: dark;
+}
+.db-input:focus {
+  border-color: var(--db-blue);
+}
+.db-select {
+  padding-right: 6px;
+  cursor: pointer;
+}
+.db-btn {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, background 0.15s;
+}
+.db-btn--primary {
+  background: var(--db-blue);
+  color: #fff;
+}
+.db-btn--primary:hover { opacity: 0.85; }
+.db-btn--ghost {
+  background: var(--db-surface-2);
+  color: var(--db-text-2);
+  border: 1px solid var(--db-border-md);
+}
+.db-btn--ghost:hover {
+  color: var(--db-text-1);
+  border-color: var(--db-text-3);
+}
+ 
+/* ─── Activity ───────────────────────────────────────── */
+.db-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.db-activity-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 56px;
+  align-items: center;
+  gap: 14px;
+}
+.db-activity-date {
+  font-size: 12px;
+  color: var(--db-text-2);
+  font-variant-numeric: tabular-nums;
+}
+.db-activity-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--db-text-1);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.db-empty {
+  color: var(--db-text-3);
+  font-size: 13px;
+  text-align: center;
+  padding: 24px 0;
+  margin: 0;
+}
+ 
+/* ─── Progress bars ──────────────────────────────────── */
+.db-bar-track {
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  height: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+.db-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.45s ease;
+}
+.db-bar-fill--error   { background: var(--db-red); }
+.db-bar-fill--success { background: var(--db-green); }
+.db-bar-fill--blue    { background: var(--db-blue); }
+ 
+/* ─── Divider between rows inside cards ─────────────── */
+.db-error-row + .db-error-row,
+.db-feedback-row + .db-feedback-row {
+  border-top: 1px solid var(--db-border);
+  padding-top: 14px;
+}
+ 
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .db-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 800px) {
+  .db-root    { padding: 20px 16px 40px; }
+  .db-row     { grid-template-columns: 1fr; }
+  .db-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .db-card-header--between { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .db-stats-grid { grid-template-columns: 1fr; }
+}
