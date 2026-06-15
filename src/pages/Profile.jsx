@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import './Profile.css';
 
 export default function Profile() {
   const [profile, setProfile] = useState({
@@ -75,307 +76,108 @@ export default function Profile() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#111827',
-        color: '#fff',
-        padding: '30px'
-      }}
-    >
+    <div className="profile-page">
       {/* Header */}
-      <div
-        style={{
-          marginBottom: 30
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: '34px',
-            fontWeight: 700
-          }}
-        >
-          Profile
-        </h1>
-
-        <p
-          style={{
-            color: '#9ca3af',
-            marginTop: 8
-          }}
-        >
-          Manage your account settings
-        </p>
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Profile</h1>
+          <p className="page-subtitle">Manage your account settings</p>
+        </div>
       </div>
 
       {/* Profile Card */}
-      <div
-        style={{
-          background: '#1f2937',
-          border: '1px solid #374151',
-          borderRadius: 18,
-          padding: 30,
-          maxWidth: 700,
-          marginBottom: 25,
-          boxShadow:
-            '0 10px 25px rgba(0,0,0,.25)'
-        }}
-      >
-        <h2
-          style={{
-            marginTop: 0,
-            marginBottom: 25
-          }}
-        >
-          Profile Information
-        </h2>
+      <div className="profile-card">
+        <h2 className="profile-card-title">Profile Information</h2>
 
         {msg && (
-          <div
-            style={{
-              background: '#064e3b',
-              color: '#34d399',
-              padding: '12px 16px',
-              borderRadius: 10,
-              marginBottom: 20,
-              border:
-                '1px solid #065f46'
-            }}
-          >
+          <div className="profile-msg success">
+            <i className="ti ti-check" />
             {msg}
           </div>
         )}
 
-        <form
-          onSubmit={updateProfile}
-        >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns:
-                '1fr 1fr',
-              gap: 20,
-              marginBottom: 20
-            }}
-          >
+        <form onSubmit={updateProfile}>
+          <div className="profile-form-grid">
             <div>
-              <label
-                style={
-                  labelStyle
-                }
-              >
-                Full Name
-              </label>
-
+              <label className="profile-label">Full Name</label>
               <input
                 value={name}
-                onChange={(e) =>
-                  setName(
-                    e.target.value
-                  )
-                }
-                style={inputStyle}
+                onChange={(e) => setName(e.target.value)}
+                className="profile-input"
               />
             </div>
 
             <div>
-              <label
-                style={
-                  labelStyle
-                }
-              >
-                Email Address
-              </label>
-
+              <label className="profile-label">Email Address</label>
               <input
-                value={
-                  profile.email
-                }
+                value={profile.email}
                 disabled
-                style={{
-                  ...inputStyle,
-                  background:
-                    '#111827',
-                  color:
-                    '#9ca3af'
-                }}
+                className="profile-input"
               />
             </div>
           </div>
 
-          <div
-            style={{
-              marginBottom: 25
-            }}
-          >
-            <label
-              style={
-                labelStyle
-              }
-            >
-              Role
-            </label>
-
+          <div className="profile-form-group">
+            <label className="profile-label">Role</label>
             <input
-              value={
-                profile.role
-              }
+              value={profile.role}
               disabled
-              style={{
-                ...inputStyle,
-                background:
-                  '#111827',
-                color:
-                  '#9ca3af',
-                width: '50%'
-              }}
+              className="profile-input"
+              style={{ width: '50%' }}
             />
           </div>
 
-          <button
-            type="submit"
-            style={
-              primaryBtn
-            }
-          >
+          <button type="submit" className="primary-btn">
             Save Changes
           </button>
         </form>
       </div>
 
       {/* Password Card */}
-      <div
-        style={{
-          background: '#1f2937',
-          border: '1px solid #374151',
-          borderRadius: 18,
-          padding: 30,
-          maxWidth: 700,
-          boxShadow:
-            '0 10px 25px rgba(0,0,0,.25)'
-        }}
-      >
-        <h2
-          style={{
-            marginTop: 0,
-            marginBottom: 25
-          }}
-        >
-          Change Password
-        </h2>
+      <div className="profile-card">
+        <h2 className="profile-card-title">Change Password</h2>
 
         {pwMsg && (
-          <div
-            style={{
-              background:
-                pwMsg.includes(
-                  'success'
-                )
-                  ? '#064e3b'
-                  : '#7f1d1d',
-
-              color:
-                pwMsg.includes(
-                  'success'
-                )
-                  ? '#34d399'
-                  : '#f87171',
-
-              padding:
-                '12px 16px',
-
-              borderRadius: 10,
-
-              marginBottom: 20,
-
-              border:
-                pwMsg.includes(
-                  'success'
-                )
-                  ? '1px solid #065f46'
-                  : '1px solid #991b1b'
-            }}
-          >
+          <div className={`profile-msg ${pwMsg.includes('success') ? 'success' : 'error'}`}>
+            <i className={pwMsg.includes('success') ? 'ti ti-check' : 'ti ti-alert-circle'} />
             {pwMsg}
           </div>
         )}
 
-        <form
-          onSubmit={
-            changePassword
-          }
-        >
-          <div
-            style={{
-              marginBottom: 18
-            }}
-          >
-            <label
-              style={
-                labelStyle
-              }
-            >
-              Current Password
-            </label>
-
+        <form onSubmit={changePassword}>
+          <div className="profile-form-group">
+            <label className="profile-label">Current Password</label>
             <input
               type="password"
               required
-              value={
-                pwForm.current_password
-              }
+              value={pwForm.current_password}
               onChange={(e) =>
                 setPwForm({
                   ...pwForm,
-                  current_password:
-                    e.target.value
+                  current_password: e.target.value
                 })
               }
-              style={
-                inputStyle
-              }
+              className="profile-input"
             />
           </div>
 
-          <div
-            style={{
-              marginBottom: 25
-            }}
-          >
-            <label
-              style={
-                labelStyle
-              }
-            >
-              New Password
-            </label>
-
+          <div className="profile-form-group">
+            <label className="profile-label">New Password</label>
             <input
               type="password"
               required
-              value={
-                pwForm.new_password
-              }
+              value={pwForm.new_password}
               onChange={(e) =>
                 setPwForm({
                   ...pwForm,
-                  new_password:
-                    e.target.value
+                  new_password: e.target.value
                 })
               }
-              style={
-                inputStyle
-              }
+              className="profile-input"
             />
           </div>
 
-          <button
-            type="submit"
-            style={
-              primaryBtn
-            }
-          >
+          <button type="submit" className="primary-btn">
             Update Password
           </button>
         </form>
@@ -384,33 +186,3 @@ export default function Profile() {
   );
 }
 
-const labelStyle = {
-  display: 'block',
-  marginBottom: 8,
-  fontSize: 13,
-  fontWeight: 600,
-  color: '#60a5fa'
-};
-
-const inputStyle = {
-  width: '100%',
-  padding: '12px 14px',
-  borderRadius: 10,
-  border: '1px solid #374151',
-  background: '#111827',
-  color: '#fff',
-  fontSize: 14,
-  boxSizing: 'border-box',
-  outline: 'none'
-};
-
-const primaryBtn = {
-  background: '#2563eb',
-  color: '#fff',
-  border: 'none',
-  borderRadius: 10,
-  padding: '12px 24px',
-  cursor: 'pointer',
-  fontWeight: 600,
-  fontSize: 14
-};

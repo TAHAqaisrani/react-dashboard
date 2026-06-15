@@ -4,6 +4,7 @@ import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import './Analytics.css';
 
 const COLORS = ['#3b82f6', '#22c55e', '#a855f7', '#f59e0b', '#ef4444'];
 
@@ -28,8 +29,10 @@ export default function Analytics() {
 
   if (!summary) {
     return (
-      <div style={{ padding: 30, color: '#fff', background: '#111827', minHeight: '100vh' }}>
-        Loading analytics...
+      <div className="analytics-page">
+        <div style={{ color: 'var(--text-secondary)' }}>
+          Loading analytics...
+        </div>
       </div>
     );
   }
@@ -43,34 +46,26 @@ export default function Analytics() {
   ];
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#111827',
-      color: '#fff',
-      padding: '30px'
-    }}>
+    <div className="analytics-page">
 
       {/* Header */}
-      <div style={{ marginBottom: 30 }}>
-        <h1 style={{ margin: 0, fontSize: 34, fontWeight: 700 }}>
-          Analytics Dashboard
-        </h1>
-        <p style={{ color: '#9ca3af', marginTop: 8 }}>
-          Real-time insights into system performance and user behavior
-        </p>
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">
+            Analytics Dashboard
+          </h1>
+          <p className="page-subtitle">
+            Real-time insights into system performance and user behavior
+          </p>
+        </div>
       </div>
 
       {/* Top Stats */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: 16,
-        marginBottom: 30
-      }}>
+      <div className="analytics-top-stats">
         {topStats.map(stat => (
-          <div key={stat.label} style={statCard}>
-            <div style={{ fontSize: 12, color: '#9ca3af' }}>{stat.label}</div>
-            <div style={{ fontSize: 24, fontWeight: 700, marginTop: 6 }}>
+          <div key={stat.label} className="analytics-stat-card">
+            <div className="analytics-stat-label">{stat.label}</div>
+            <div className="analytics-stat-value">
               {stat.value}
             </div>
           </div>
@@ -78,58 +73,53 @@ export default function Analytics() {
       </div>
 
       {/* Likes / Dislikes */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 16,
-        marginBottom: 25
-      }}>
-        <div style={{ ...statCard, borderLeft: '4px solid #22c55e' }}>
-          <div style={{ color: '#9ca3af' }}>Likes</div>
-          <div style={{ fontSize: 28, color: '#22c55e', fontWeight: 700 }}>
+      <div className="analytics-likes-grid">
+        <div className="analytics-like-card likes">
+          <div className="analytics-stat-label">Likes</div>
+          <div className="analytics-stat-value" style={{ color: 'var(--success)' }}>
             {summary.likes}
           </div>
         </div>
 
-        <div style={{ ...statCard, borderLeft: '4px solid #ef4444' }}>
-          <div style={{ color: '#9ca3af' }}>Dislikes</div>
-          <div style={{ fontSize: 28, color: '#ef4444', fontWeight: 700 }}>
+        <div className="analytics-like-card dislikes">
+          <div className="analytics-stat-label">Dislikes</div>
+          <div className="analytics-stat-value" style={{ color: 'var(--danger)' }}>
             {summary.dislikes}
           </div>
         </div>
       </div>
 
       {/* Engagement */}
-      <div style={card}>
+      <div className="analytics-card">
         <h3>User Engagement by Source</h3>
         {engagement.map(e => (
-          <div key={e.source} style={row}>
+          <div key={e.source} className="analytics-row">
             <span>{e.source || 'Unknown'}</span>
-            <span style={{ fontWeight: 600 }}>{e.count}</span>
+            <span className="analytics-row-value">{e.count}</span>
           </div>
         ))}
       </div>
 
       {/* Satisfaction */}
-      <div style={card}>
+      <div className="analytics-card">
         <h3>Satisfaction by Mode</h3>
         {satMode.map(s => (
-          <div key={s.mode} style={{ marginBottom: 18 }}>
-            <div style={row}>
+          <div key={s.mode} style={{ marginBottom: '18px' }}>
+            <div className="analytics-row" style={{ borderBottom: 'none', paddingBottom: 0 }}>
               <span>{s.mode}</span>
-              <span>{s.satisfaction_rate}%</span>
+              <span className="analytics-row-value">{s.satisfaction_rate}%</span>
             </div>
 
-            <div style={progressBg}>
+            <div className="analytics-progress-bg">
               <div style={{
                 width: `${s.satisfaction_rate}%`,
                 height: '100%',
-                background: '#22c55e',
-                borderRadius: 8
+                background: 'var(--success)',
+                borderRadius: '8px'
               }} />
             </div>
 
-            <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 6 }}>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '6px' }}>
               ♥ {s.likes} | ✕ {s.dislikes}
             </div>
           </div>
@@ -137,20 +127,19 @@ export default function Analytics() {
       </div>
 
       {/* Charts Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        gap: 20
-      }}>
+      <div className="analytics-charts-grid">
 
         {/* Messages Over Time */}
-        <div style={card}>
+        <div className="analytics-card">
           <h3>Messages Over Time</h3>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={msgTime}>
-              <XAxis dataKey="_id" stroke="#9ca3af" />
-              <YAxis stroke="#9ca3af" />
-              <Tooltip />
+              <XAxis dataKey="_id" stroke="var(--text-secondary)" />
+              <YAxis stroke="var(--text-secondary)" />
+              <Tooltip 
+                contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                itemStyle={{ color: 'var(--text-primary)' }}
+              />
               <Legend />
               <Line type="monotone" dataKey="total" stroke="#3b82f6" />
               <Line type="monotone" dataKey="guide" stroke="#22c55e" />
@@ -159,38 +148,41 @@ export default function Analytics() {
         </div>
 
         {/* Active Users */}
-        <div style={card}>
+        <div className="analytics-card">
           <h3>Active Users Per Day</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={activeDay}>
-              <XAxis dataKey="date" stroke="#9ca3af" />
-              <YAxis stroke="#9ca3af" />
-              <Tooltip />
+              <XAxis dataKey="date" stroke="var(--text-secondary)" />
+              <YAxis stroke="var(--text-secondary)" />
+              <Tooltip 
+                contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                itemStyle={{ color: 'var(--text-primary)' }}
+                cursor={{ fill: 'var(--bg-main)' }}
+              />
               <Bar dataKey="count" fill="#a855f7" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Bottom Charts */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 20
-        }}>
+        <div className="analytics-charts-subgrid">
 
-          <div style={card}>
+          <div className="analytics-card">
             <h3>Error Trends</h3>
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={errTrend}>
-                <XAxis dataKey="_id" stroke="#9ca3af" />
-                <YAxis stroke="#9ca3af" />
-                <Tooltip />
+                <XAxis dataKey="_id" stroke="var(--text-secondary)" />
+                <YAxis stroke="var(--text-secondary)" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                  itemStyle={{ color: 'var(--text-primary)' }}
+                />
                 <Line type="monotone" dataKey="count" stroke="#ef4444" />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          <div style={card}>
+          <div className="analytics-card">
             <h3>Mode Distribution</h3>
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
@@ -199,13 +191,16 @@ export default function Analytics() {
                   dataKey="count"
                   nameKey="_id"
                   outerRadius={80}
-                  label
+                  label={{ fill: 'var(--text-primary)' }}
                 >
                   {modeDist.map((_, i) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                  itemStyle={{ color: 'var(--text-primary)' }}
+                />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
@@ -216,36 +211,3 @@ export default function Analytics() {
     </div>
   );
 }
-
-/* ===== STYLES ===== */
-
-const card = {
-  background: '#1f2937',
-  border: '1px solid #374151',
-  borderRadius: 16,
-  padding: 20,
-  boxShadow: '0 10px 25px rgba(0,0,0,.25)'
-};
-
-const statCard = {
-  background: '#1f2937',
-  border: '1px solid #374151',
-  borderRadius: 14,
-  padding: 16
-};
-
-const row = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: '10px 0',
-  borderBottom: '1px solid #374151',
-  color: '#d1d5db'
-};
-
-const progressBg = {
-  height: 10,
-  background: '#111827',
-  borderRadius: 8,
-  marginTop: 8,
-  overflow: 'hidden'
-};

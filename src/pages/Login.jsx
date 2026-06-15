@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import './Login.css';
 
-export default function Login() {
+export default function Login({ theme, toggleTheme }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -35,55 +35,65 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(profile.data));
 
       navigate('/dashboard');
-    } catch {
-      setError('Invalid email or password');
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Invalid email or password');
     }
   }
 
   return (
     <div className="login-page">
-      <div className="login-card">
+      <div className="login-card-container">
+        <div className="login-card">
+          <div className="logo-circle">⚡</div>
+          
+          <h1>Sobrus Agents</h1>
+          <p className="subtitle">
+            Welcome back. Sign in to continue.
+          </p>
 
-        <div className="logo-circle">⚡</div>
-
-        <h1>Sobrus Agents</h1>
-        <p className="subtitle">
-          Welcome back. Sign in to continue.
-        </p>
-
-        {error && (
-          <div className="error-box">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              placeholder="admin@sobrus.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="login-btn">
-            Sign In
+          <button 
+            className="theme-toggle login-theme-toggle" 
+            onClick={toggleTheme} 
+            aria-label="Toggle dark mode"
+            type="button"
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-        </form>
+
+          {error && (
+            <div className="error-box">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                placeholder="admin@sobrus.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="login-btn">
+              Sign In
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

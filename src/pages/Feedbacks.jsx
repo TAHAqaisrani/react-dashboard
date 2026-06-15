@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import './Feedbacks.css';
 
 export default function Feedbacks() {
   const [items, setItems] = useState([]);
@@ -88,120 +89,57 @@ export default function Feedbacks() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#111827',
-        color: '#fff',
-        padding: '30px'
-      }}
-    >
+    <div className="feedbacks-page">
       {/* Header */}
-      <div
-        style={{
-          marginBottom: 25
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: '34px',
-            fontWeight: 700
-          }}
-        >
-          Feedbacks & Comments
-        </h1>
-
-        <p
-          style={{
-            color: '#9ca3af',
-            marginTop: 8
-          }}
-        >
-          Manage and review user
-          feedback for AI agents
-        </p>
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">
+            Feedbacks & Comments
+          </h1>
+          <p className="page-subtitle">
+            Manage and review user feedback for AI agents
+          </p>
+        </div>
       </div>
 
       {/* Filters Card */}
-      <div
-        style={{
-          background: '#1f2937',
-          border: '1px solid #374151',
-          borderRadius: 18,
-          padding: 20,
-          marginBottom: 25,
-          boxShadow:
-            '0 10px 25px rgba(0,0,0,.25)'
-        }}
-      >
-        <div
-          style={{
-            marginBottom: 15
-          }}
-        >
-          <label
-            style={{
-              marginRight: 10,
-              fontWeight: 600
-            }}
-          >
+      <div className="filters-card">
+        <div style={{ marginBottom: '16px' }} className="filter-row">
+          <label className="filter-label">
             Date Range:
           </label>
-
           <select
             value={filters.date_range}
             onChange={(e) =>
               setFilters({
                 ...filters,
-                date_range:
-                  e.target.value
+                date_range: e.target.value
               })
             }
-            style={inputStyle}
+            className="filter-input"
           >
-            <option>
-              All Time
-            </option>
+            <option>All Time</option>
             <option>Today</option>
-            <option>
-              Last 7 Days
-            </option>
-            <option>
-              Last 30 Days
-            </option>
-            <option>
-              Last 90 Days
-            </option>
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option>Last 90 Days</option>
           </select>
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            gap: 12,
-            flexWrap: 'wrap'
-          }}
-        >
+        <div className="filter-row">
           <select
             value={filters.agent_id}
             onChange={(e) =>
               setFilters({
                 ...filters,
-                agent_id:
-                  e.target.value
+                agent_id: e.target.value
               })
             }
-            style={inputStyle}
+            className="filter-input"
           >
-            <option value="">
-              All Agents
-            </option>
-
+            <option value="">All Agents</option>
             {agents.map((a) => (
-              <option key={a}>
-                {a}
-              </option>
+              <option key={a}>{a}</option>
             ))}
           </select>
 
@@ -211,33 +149,25 @@ export default function Feedbacks() {
             onChange={(e) =>
               setFilters({
                 ...filters,
-                session_id:
-                  e.target.value
+                session_id: e.target.value
               })
             }
-            style={inputStyle}
+            className="filter-input"
           />
 
           <select
-            value={
-              filters.like_status
-            }
+            value={filters.like_status}
             onChange={(e) =>
               setFilters({
                 ...filters,
-                like_status:
-                  e.target.value
+                like_status: e.target.value
               })
             }
-            style={inputStyle}
+            className="filter-input"
           >
             <option>All</option>
-            <option value="like">
-              Like
-            </option>
-            <option value="dislike">
-              Dislike
-            </option>
+            <option value="like">Like</option>
+            <option value="dislike">Dislike</option>
           </select>
 
           <input
@@ -246,11 +176,10 @@ export default function Feedbacks() {
             onChange={(e) =>
               setFilters({
                 ...filters,
-                user_id:
-                  e.target.value
+                user_id: e.target.value
               })
             }
-            style={inputStyle}
+            className="filter-input"
           />
 
           <select
@@ -258,308 +187,91 @@ export default function Feedbacks() {
             onChange={(e) =>
               setFilters({
                 ...filters,
-                mode:
-                  e.target.value
+                mode: e.target.value
               })
             }
-            style={inputStyle}
+            className="filter-input"
           >
-            <option>
-              All Modes
-            </option>
-            <option>
-              Agent
-            </option>
-            <option>
-              Guide
-            </option>
+            <option>All Modes</option>
+            <option>Agent</option>
+            <option>Guide</option>
           </select>
 
-          <button
-            onClick={load}
-            style={{
-              ...primaryBtn
-            }}
-          >
+          <button onClick={load} className="primary-btn">
             Apply Filters
           </button>
 
-          <button
-            onClick={reset}
-            style={{
-              ...secondaryBtn
-            }}
-          >
+          <button onClick={reset} className="secondary-btn">
             Reset All
           </button>
         </div>
       </div>
 
       {/* Table Card */}
-      <div
-        style={{
-          background: '#1f2937',
-          border: '1px solid #374151',
-          borderRadius: 18,
-          overflow: 'hidden',
-          boxShadow:
-            '0 10px 25px rgba(0,0,0,.25)'
-        }}
-      >
-        <table
-          style={{
-            width: '100%',
-            borderCollapse:
-              'collapse'
-          }}
-        >
-          <thead
-            style={{
-              background:
-                '#111827'
-            }}
-          >
-            <tr>
-              {[
-                'USER',
-                'TYPE',
-                'MODE',
-                'COMMENT',
-                'AGENT ID',
-                'DATE'
-              ].map((h) => (
-                <th
-                  key={h}
-                  style={{
-                    padding:
-                      '16px',
-                    textAlign:
-                      'left',
-                    fontSize:
-                      '12px',
-                    color:
-                      '#9ca3af',
-                    letterSpacing:
-                      '.5px'
-                  }}
-                >
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {items.map(
-              (item, index) => (
-                <tr
-                  key={index}
-                  style={{
-                    borderTop:
-                      '1px solid #374151'
-                  }}
-                >
-                  <td
-                    style={
-                      tdStyle
-                    }
-                  >
-                    <div
-                      style={{
-                        fontWeight: 600
-                      }}
-                    >
-                      Unknown User
-                    </div>
-
-                    <div
-                      style={{
-                        color:
-                          '#9ca3af',
-                        fontSize:
-                          12
-                      }}
-                    >
+      <div className="table-card">
+        <div style={{ overflowX: 'auto' }}>
+          <table className="feedbacks-table">
+            <thead>
+              <tr>
+                {['USER', 'TYPE', 'MODE', 'COMMENT', 'AGENT ID', 'DATE'].map((h) => (
+                  <th key={h}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item, index) => (
+                <tr key={index}>
+                  <td>
+                    <div style={{ fontWeight: 600 }}>Unknown User</div>
+                    <div style={{ color: 'var(--text-secondary)', fontSize: '12px' }}>
                       No Email
                     </div>
                   </td>
-
-                  <td
-                    style={
-                      tdStyle
-                    }
-                  >
-                    <span
-                      style={{
-                        background:
-                          item.type ===
-                          'like'
-                            ? '#064e3b'
-                            : '#7f1d1d',
-
-                        color:
-                          item.type ===
-                          'like'
-                            ? '#34d399'
-                            : '#f87171',
-
-                        padding:
-                          '5px 12px',
-
-                        borderRadius:
-                          999,
-
-                        fontSize:
-                          13,
-
-                        fontWeight: 600
-                      }}
-                    >
-                      {item.type ===
-                      'like'
-                        ? '♥ Like'
-                        : '✕ Dislike'}
+                  <td>
+                    <span className={`status-badge ${item.type === 'like' ? 'success' : 'danger'}`}>
+                      {item.type === 'like' ? '♥ Like' : '✕ Dislike'}
                     </span>
                   </td>
-
-                  <td
-                    style={
-                      tdStyle
-                    }
-                  >
-                    <span
-                      style={{
-                        background:
-                          item.mode ===
-                          'Guide'
-                            ? '#172554'
-                            : '#3b0764',
-
-                        color:
-                          item.mode ===
-                          'Guide'
-                            ? '#60a5fa'
-                            : '#c084fc',
-
-                        padding:
-                          '5px 12px',
-
-                        borderRadius:
-                          999,
-
-                        fontSize:
-                          13
-                      }}
-                    >
+                  <td>
+                    <span className={`status-badge ${item.mode === 'Guide' ? 'info' : 'warning'}`}>
                       ● {item.mode}
                     </span>
                   </td>
-
-                  <td
-                    style={{
-                      ...tdStyle,
-                      color:
-                        '#d1d5db',
-                      maxWidth:
-                        350
-                    }}
-                  >
-                    {item.comment ||
-                      'No comment'}
+                  <td style={{ color: 'var(--text-secondary)', maxWidth: '350px' }}>
+                    {item.comment || 'No comment'}
                   </td>
-
-                  <td
-                    style={{
-                      ...tdStyle,
-                      color:
-                        '#9ca3af'
-                    }}
-                  >
+                  <td style={{ color: 'var(--text-secondary)' }}>
                     {item.agent_id}
                   </td>
-
-                  <td
-                    style={{
-                      ...tdStyle,
-                      color:
-                        '#9ca3af',
-                      fontSize:
-                        13
-                    }}
-                  >
-                    {new Date(
-                      item.timestamp
-                    ).toLocaleString()}
+                  <td style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>
+                    {new Date(item.timestamp).toLocaleString()}
                   </td>
                 </tr>
-              )
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Pagination */}
-        <div
-          style={{
-            padding: 18,
-            borderTop:
-              '1px solid #374151',
-
-            display: 'flex',
-            justifyContent:
-              'space-between',
-
-            alignItems: 'center'
-          }}
-        >
-          <span
-            style={{
-              color: '#9ca3af'
-            }}
-          >
+        <div className="pagination">
+          <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
             Total Records: {total}
           </span>
-
-          <div
-            style={{
-              display: 'flex',
-              gap: 10,
-              alignItems:
-                'center'
-            }}
-          >
+          <div className="pagination-controls">
             <button
-              disabled={
-                page === 1
-              }
-              onClick={() =>
-                setPage(
-                  (p) => p - 1
-                )
-              }
-              style={
-                paginationBtn
-              }
+              disabled={page === 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="pagination-btn"
             >
               Previous
             </button>
-
-            <span>
+            <span style={{ fontSize: '14px', fontWeight: 500 }}>
               Page {page}
             </span>
-
             <button
-              disabled={
-                page * 20 >=
-                total
-              }
-              onClick={() =>
-                setPage(
-                  (p) => p + 1
-                )
-              }
-              style={
-                paginationBtn
-              }
+              disabled={page * 20 >= total}
+              onClick={() => setPage((p) => p + 1)}
+              className="pagination-btn"
             >
               Next
             </button>
@@ -570,44 +282,3 @@ export default function Feedbacks() {
   );
 }
 
-const tdStyle = {
-  padding: '16px'
-};
-
-const inputStyle = {
-  padding: '10px 14px',
-  background: '#111827',
-  border: '1px solid #374151',
-  borderRadius: 10,
-  color: '#fff',
-  minWidth: 160
-};
-
-const primaryBtn = {
-  background: '#2563eb',
-  color: '#fff',
-  border: 'none',
-  borderRadius: 10,
-  padding: '10px 18px',
-  cursor: 'pointer',
-  fontWeight: 600
-};
-
-const secondaryBtn = {
-  background: '#374151',
-  color: '#fff',
-  border: 'none',
-  borderRadius: 10,
-  padding: '10px 18px',
-  cursor: 'pointer',
-  fontWeight: 600
-};
-
-const paginationBtn = {
-  background: '#111827',
-  color: '#fff',
-  border: '1px solid #374151',
-  borderRadius: 8,
-  padding: '8px 14px',
-  cursor: 'pointer'
-};

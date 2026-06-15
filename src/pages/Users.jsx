@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import './Users.css';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -16,13 +17,10 @@ export default function Users() {
 
   function load() {
     const params = new URLSearchParams();
-
     if (search) params.append('search', search);
     if (role !== 'All Roles') params.append('role', role);
 
-    api
-      .get(`/users/?${params}`)
-      .then((r) => setUsers(r.data));
+    api.get(`/users/?${params}`).then((r) => setUsers(r.data));
   }
 
   useEffect(() => {
@@ -31,290 +29,77 @@ export default function Users() {
 
   async function addUser(e) {
     e.preventDefault();
-
     await api.post('/users/', form);
-
     setShowAdd(false);
-
-    setForm({
-      name: '',
-      email: '',
-      password: '',
-      role: 'Admin'
-    });
-
+    setForm({ name: '', email: '', password: '', role: 'Admin' });
     load();
   }
 
   async function deleteUser(email) {
     if (!window.confirm(`Delete ${email}?`)) return;
-
     await api.delete(`/users/${email}`);
-
     load();
   }
 
   async function resetPassword(email) {
-    const r = await api.post(
-      `/users/${email}/reset-password`
-    );
-
-    alert(
-      `Password reset. Temp: ${
-        r.data.temp_password || 'sent to email'
-      }`
-    );
+    const r = await api.post(`/users/${email}/reset-password`);
+    alert(`Password reset. Temp: ${r.data.temp_password || 'sent to email'}`);
   }
 
   return (
-    <div
-      style={{
-        background: '#111827',
-        minHeight: '100vh',
-        padding: '30px',
-        color: '#fff'
-      }}
-    >
+    <div className="users-page">
       {/* HEADER */}
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: '30px'
-        }}
-      >
+      <div className="page-header">
         <div>
-          <h1
-            style={{
-              margin: 0,
-              fontSize: '32px',
-              fontWeight: '700'
-            }}
-          >
-            Users Management
-          </h1>
-
-          <p
-            style={{
-              color: '#9ca3af',
-              marginTop: '8px'
-            }}
-          >
-            Manage system users and permissions
-          </p>
+          <h1 className="page-title">Users Management</h1>
+          <p className="page-subtitle">Manage system users and permissions</p>
         </div>
-
-        <button
-          onClick={() => setShowAdd(true)}
-          style={{
-            background: '#2563eb',
-            color: '#fff',
-            border: 'none',
-            padding: '12px 22px',
-            borderRadius: '10px',
-            cursor: 'pointer',
-            fontWeight: '600',
-            fontSize: '14px'
-          }}
-        >
+        <button className="primary-btn" onClick={() => setShowAdd(true)}>
           + Add User
         </button>
       </div>
 
       {/* SEARCH BAR */}
-
-      <div
-        style={{
-          display: 'flex',
-          gap: '12px',
-          marginBottom: '25px'
-        }}
-      >
+      <div className="search-bar">
         <input
+          className="search-input"
           value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Search users by name or email..."
-          style={{
-            flex: 1,
-            padding: '12px 14px',
-            background: '#1f2937',
-            border: '1px solid #374151',
-            borderRadius: '10px',
-            color: '#fff',
-            outline: 'none'
-          }}
         />
-
         <select
+          className="filter-select"
           value={role}
-          onChange={(e) =>
-            setRole(e.target.value)
-          }
-          style={{
-            padding: '12px 14px',
-            background: '#1f2937',
-            border: '1px solid #374151',
-            borderRadius: '10px',
-            color: '#fff'
-          }}
+          onChange={(e) => setRole(e.target.value)}
         >
           <option>All Roles</option>
           <option>Admin</option>
           <option>Viewer</option>
         </select>
-
-        <button
-          onClick={load}
-          style={{
-            background: '#2563eb',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '10px',
-            padding: '12px 20px',
-            cursor: 'pointer',
-            fontWeight: '600'
-          }}
-        >
-          Search
-        </button>
+        <button className="primary-btn" onClick={load}>Search</button>
       </div>
 
       {/* USERS */}
-
       {users.map((u) => (
-        <div
-          key={u.email}
-          style={{
-            background: '#1f2937',
-            border: '1px solid #374151',
-            borderRadius: '16px',
-            padding: '18px 20px',
-            marginBottom: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            boxShadow:
-              '0 10px 25px rgba(0,0,0,.25)'
-          }}
-        >
-          {/* AVATAR */}
-
-          <div
-            style={{
-              width: '50px',
-              height: '50px',
-              borderRadius: '50%',
-              background: '#2563eb',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: '700',
-              fontSize: '18px',
-              marginRight: '16px'
-            }}
-          >
+        <div key={u.email} className="user-card">
+          <div className="user-avatar">
             {u.name?.[0]?.toUpperCase()}
           </div>
-
-          {/* INFO */}
-
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontWeight: '600',
-                fontSize: '16px'
-              }}
-            >
-              {u.name}
-            </div>
-
-            <div
-              style={{
-                color: '#9ca3af',
-                fontSize: '13px',
-                marginTop: '4px'
-              }}
-            >
-              {u.email}
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                gap: '8px',
-                marginTop: '8px'
-              }}
-            >
-              <span
-                style={{
-                  background: '#374151',
-                  color: '#fff',
-                  padding: '4px 10px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '600'
-                }}
-              >
-                {u.role}
-              </span>
-
-              <span
-                style={{
-                  background: '#064e3b',
-                  color: '#34d399',
-                  padding: '4px 10px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '600'
-                }}
-              >
-                {u.status}
-              </span>
+          
+          <div className="user-info">
+            <div className="user-name">{u.name}</div>
+            <div className="user-email">{u.email}</div>
+            <div className="user-badges">
+              <span className="badge-role">{u.role}</span>
+              <span className="badge-status">{u.status || 'Active'}</span>
             </div>
           </div>
 
-          {/* ACTIONS */}
-
-          <div
-            style={{
-              display: 'flex',
-              gap: '10px'
-            }}
-          >
-            <button
-              onClick={() =>
-                resetPassword(u.email)
-              }
-              style={{
-                background: '#111827',
-                color: '#fff',
-                border:
-                  '1px solid #374151',
-                padding: '8px 14px',
-                borderRadius: '8px',
-                cursor: 'pointer'
-              }}
-            >
+          <div className="user-actions">
+            <button className="action-btn" onClick={() => resetPassword(u.email)}>
               Reset Password
             </button>
-
-            <button
-              onClick={() =>
-                deleteUser(u.email)
-              }
-              style={{
-                background: 'transparent',
-                color: '#ef4444',
-                border:
-                  '1px solid #ef4444',
-                padding: '8px 14px',
-                borderRadius: '8px',
-                cursor: 'pointer'
-              }}
-            >
+            <button className="action-btn danger" onClick={() => deleteUser(u.email)}>
               Delete
             </button>
           </div>
@@ -322,150 +107,47 @@ export default function Users() {
       ))}
 
       {/* MODAL */}
-
       {showAdd && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background:
-              'rgba(0,0,0,.75)',
-            backdropFilter: 'blur(6px)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000
-          }}
-        >
-          <form
-            onSubmit={addUser}
-            style={{
-              width: '450px',
-              background: '#1f2937',
-              border:
-                '1px solid #374151',
-              borderRadius: '18px',
-              padding: '30px',
-              color: '#fff',
-              boxShadow:
-                '0 20px 40px rgba(0,0,0,.4)'
-            }}
-          >
-            <h2
-              style={{
-                marginTop: 0,
-                marginBottom: '24px'
-              }}
-            >
-              Add New User
-            </h2>
-
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}
-            >
+        <div className="modal-overlay">
+          <form className="modal-content" onSubmit={addUser}>
+            <h2>Add New User</h2>
+            <div className="form-fields">
               <input
+                className="form-input"
                 placeholder="Full Name"
                 value={form.name}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    name: e.target.value
-                  })
-                }
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
-                style={inputStyle}
               />
-
               <input
+                className="form-input"
                 type="email"
                 placeholder="Email"
                 value={form.email}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    email: e.target.value
-                  })
-                }
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
-                style={inputStyle}
               />
-
               <input
+                className="form-input"
                 type="password"
                 placeholder="Password"
                 value={form.password}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    password:
-                      e.target.value
-                  })
-                }
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                style={inputStyle}
               />
-
               <select
+                className="form-input"
                 value={form.role}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    role: e.target.value
-                  })
-                }
-                style={inputStyle}
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
               >
                 <option>Admin</option>
                 <option>Viewer</option>
               </select>
             </div>
 
-            <div
-              style={{
-                display: 'flex',
-                gap: '12px',
-                marginTop: '24px'
-              }}
-            >
-              <button
-                type="submit"
-                style={{
-                  flex: 1,
-                  background:
-                    '#2563eb',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '12px',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  fontWeight: '600'
-                }}
-              >
-                Create User
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setShowAdd(false)
-                }
-                style={{
-                  flex: 1,
-                  background:
-                    '#374151',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '12px',
-                  borderRadius: '10px',
-                  cursor: 'pointer'
-                }}
-              >
-                Cancel
-              </button>
+            <div className="modal-actions">
+              <button type="submit" className="primary-btn" style={{ flex: 1 }}>Create User</button>
+              <button type="button" className="btn-cancel" onClick={() => setShowAdd(false)}>Cancel</button>
             </div>
           </form>
         </div>
@@ -473,14 +155,3 @@ export default function Users() {
     </div>
   );
 }
-
-const inputStyle = {
-  width: '100%',
-  padding: '12px 14px',
-  background: '#111827',
-  border: '1px solid #374151',
-  borderRadius: '10px',
-  color: '#fff',
-  outline: 'none',
-  boxSizing: 'border-box'
-};
